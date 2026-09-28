@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pace &amp; Power</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pace &amp; Power">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#15201A">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#F1F3EF; --surface:#FFFFFF; --sunk:#E6EAE4; --ink:#15201A; --muted:#56655C; --faint:#8A978F; --rule:#D2D9D1;
+  --ball:#A8212B; --ball-soft:#F7E4E4; --turf:#2E6A45; --turf-soft:#DFECE3; --clay:#8E6F42; --clay-soft:#F0E8DB;
+  --on-accent:#FFFFFF; --focus:#1F5FBF; --bar:#15201A; --bar-ink:#E6ECE7;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    color-scheme:dark;
+    --bg:#0E1411; --surface:#151D18; --sunk:#1C2621; --ink:#E6ECE7; --muted:#9AA89F; --faint:#6E7C73; --rule:#2B3731;
+    --ball:#E8666F; --ball-soft:#3A1F22; --turf:#74C391; --turf-soft:#1B3325; --clay:#D2B283; --clay-soft:#342A1C;
+    --on-accent:#0E1411; --focus:#7FB0FF; --bar:#080C0A; --bar-ink:#E6ECE7;
+  }
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.top{position:sticky;top:0;z-index:10;background:var(--bar);color:var(--bar-ink);padding:calc(env(safe-area-inset-top,0px) + 8px) 16px 10px;display:flex;align-items:center;gap:10px}
+.top h1{margin:0;font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:.02em;text-transform:uppercase;flex:1;line-height:1}
+.top h1 span{color:#E8666F}
+.sync{font-size:12px;opacity:.8;white-space:nowrap}
+.sync.err{color:#F3A0A6;opacity:1}
+.gear{background:none;border:0;color:var(--bar-ink);font-size:22px;padding:4px 6px;cursor:pointer;line-height:1}
+main{padding:14px 16px calc(170px + env(safe-area-inset-bottom,0px));max-width:720px;margin:0 auto}
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--rule);display:grid;grid-template-columns:repeat(4,1fr);padding-bottom:env(safe-area-inset-bottom,0px)}
+.tabs button{background:none;border:0;padding:10px 0 9px;font-size:12px;font-weight:600;color:var(--muted);display:grid;justify-items:center;gap:2px;cursor:pointer}
+.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs button.on{color:var(--ink)}
+.tabs button.on svg{stroke:var(--ball)}
+h2{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:30px;line-height:1;margin:0}
+h3{margin:0;font-size:17px;line-height:1.25}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)} .small{font-size:13px}
+.nav{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.nav .mid{flex:1;text-align:center}
+.round{width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--surface);font-size:20px;cursor:pointer;line-height:1}
+.hero{display:grid;gap:6px;margin-bottom:14px}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--sunk);color:var(--muted)}
+.pill.p1{background:var(--turf-soft);color:var(--turf)} .pill.easy{background:var(--clay-soft);color:var(--clay)} .pill.p2{background:var(--ball-soft);color:var(--ball)}
+.pill.done{background:var(--turf);color:var(--on-accent)}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:14px;margin-bottom:12px}
+.exh{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start}
+.num{font-family:var(--display);font-weight:800;font-size:24px;line-height:1;color:var(--faint)}
+.exc.power .num{color:var(--ball)}
+.meta{font-size:13px;color:var(--muted);margin-top:3px;font-variant-numeric:tabular-nums}
+.meta b{color:var(--ink);font-weight:600}
+.last{font-size:13px;color:var(--turf);margin-top:2px;font-weight:600}
+details{margin:8px 0 0 38px;font-size:14px;color:var(--muted)}
+summary{cursor:pointer;font-weight:600;color:var(--ink);font-size:13px}
+details p{margin:6px 0 0}
+.sets{display:grid;gap:6px;margin:10px 0 0 38px}
+.set{display:grid;grid-template-columns:18px 1fr 1fr 44px;gap:8px;align-items:center}
+.sn{font-size:13px;color:var(--faint);font-variant-numeric:tabular-nums}
+.fld{position:relative}
+.fld input{width:100%;height:44px;border:1px solid var(--rule);border-radius:10px;background:var(--bg);padding:0 40px 0 10px;font-size:17px;font-variant-numeric:tabular-nums}
+.fld span{position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--faint);pointer-events:none}
+.ok{width:44px;height:44px;border-radius:10px;border:1.5px solid var(--rule);background:var(--surface);font-size:20px;color:var(--faint);cursor:pointer}
+.set.is .ok{background:var(--turf);border-color:var(--turf);color:var(--on-accent)}
+.set.is input{border-color:var(--turf)}
+.rowbtns{display:flex;gap:8px;margin:8px 0 0 38px}
+.ghost{border:1px dashed var(--rule);background:none;border-radius:8px;padding:6px 10px;font-size:13px;color:var(--muted);cursor:pointer}
+.btn{display:block;width:100%;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px;background:var(--ink);color:var(--bg);cursor:pointer}
+.btn.turf{background:var(--turf);color:var(--on-accent)}
+.btn.line{background:none;border:1.5px solid var(--rule);color:var(--ink)}
+.scale{display:grid;grid-template-columns:repeat(11,1fr);gap:4px;margin-top:8px}
+.scale button{height:40px;border-radius:8px;border:1px solid var(--rule);background:var(--bg);font-size:14px;font-variant-numeric:tabular-nums;cursor:pointer;padding:0}
+.scale button.g.on{background:var(--turf);color:var(--on-accent);border-color:var(--turf)}
+.scale button.a.on{background:var(--clay);color:var(--on-accent);border-color:var(--clay)}
+.scale button.r.on{background:var(--ball);color:var(--on-accent);border-color:var(--ball)}
+textarea{width:100%;min-height:70px;border:1px solid var(--rule);border-radius:10px;background:var(--bg);padding:10px;font-size:16px;margin-top:8px}
+.timer{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:11;background:var(--ink);color:var(--bg);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 6px 24px rgba(0,0,0,.25);cursor:pointer}
+.timer .t{font-family:var(--mono);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.timer .l{flex:1;font-size:14px}
+.timer.go{background:var(--turf);color:var(--on-accent)}
+.weeks{display:grid;grid-template-columns:repeat(8,1fr);gap:5px;margin-bottom:12px}
+.weeks button{border:1px solid var(--rule);border-top:4px solid var(--ph);background:var(--surface);border-radius:8px;padding:6px 0;font-family:var(--display);font-weight:800;font-size:17px;cursor:pointer}
+.weeks .p1{--ph:var(--turf)} .weeks .easy{--ph:var(--clay)} .weeks .p2{--ph:var(--ball)}
+.weeks button.on{background:var(--ph);color:var(--on-accent);border-color:var(--ph)}
+.dayrow{display:grid;grid-template-columns:52px 1fr auto;gap:10px;align-items:start;padding:12px 0;border-top:1px solid var(--rule);cursor:pointer}
+.dayrow:first-child{border-top:0}
+.dayrow .d{font-weight:700}
+.dayrow ul{margin:4px 0 0;padding-left:16px;font-size:13px;color:var(--muted)}
+.tiles{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
+.tile{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:12px}
+.tile .v{font-family:var(--display);font-weight:800;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.tile .k{font-size:12px;color:var(--muted);margin-top:4px}
+.chart{width:100%;margin-top:8px}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.chart .cap{font-size:13px;color:var(--muted);min-height:18px;margin-top:4px;font-variant-numeric:tabular-nums}
+select,.in{width:100%;height:44px;border:1px solid var(--rule);border-radius:10px;background:var(--bg);padding:0 10px;font-size:16px}
+label.f{display:grid;gap:4px;font-size:13px;color:var(--muted);margin-top:10px}
+.hist{width:100%;border-collapse:collapse;font-size:14px;margin-top:8px;font-variant-numeric:tabular-nums}
+.hist td{padding:6px 4px;border-top:1px solid var(--rule)}
+.hist td:last-child{text-align:right;color:var(--muted)}
+.empty{padding:22px 10px;text-align:center;color:var(--muted);font-size:14px}
+.sheet{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.45);display:flex;align-items:flex-end}
+.sheet .panel{background:var(--bg);width:100%;max-height:92%;overflow:auto;border-radius:18px 18px 0 0;padding:18px 16px calc(24px + env(safe-area-inset-bottom,0px))}
+.guide h3{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:22px;margin-bottom:6px}
+.guide ol,.guide ul{margin:0;padding-left:20px;display:grid;gap:6px;font-size:15px}
+.guide p{margin:0 0 8px;font-size:15px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 58px);z-index:30;background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;box-shadow:0 4px 16px rgba(0,0,0,.2)}
+.stack{display:grid;gap:8px}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Pace <span>&amp;</span> Power</h1>
+  <span class="sync" id="syncStatus"></span>
+  <button class="gear" id="gear" aria-label="Settings">⚙︎</button>
+</header>
+<main id="view"></main>
+<div id="timer" class="timer" hidden></div>
+<nav class="tabs" id="tabs">
+  <button data-tab="today" class="on"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Today</button>
+  <button data-tab="plan"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>Plan</button>
+  <button data-tab="progress"><svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M5 16l4-5 4 3 6-8"/></svg>Progress</button>
+  <button data-tab="guide"><svg viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></svg>Guide</button>
+</nav>
+
+<template id="guideTpl">
+  <div class="guide">
+    <div class="card"><h3>How to run it</h3><ul>
+      <li><b>Warm up 5 min</b> on the ski erg or bike, then 2 light sets of the first exercise. On leg days, add a wall sit, 2×30 s.</li>
+      <li>Do exercises <b>in order</b>, all sets of one before the next.</li>
+      <li>Pick a weight you could lift <b>2–3 more times</b> at the end of each set.</li>
+      <li>Hit every rep on every set? <b>Add 5 lb</b> next time (2.5 lb per hand for dumbbells). The app shows what you did last time.</li>
+      <li>Tap <b>✓</b> after each set. It fills in your target if you left it blank and starts the rest timer.</li>
+    </ul></div>
+    <div class="card"><h3>Left knee rule</h3><ul>
+      <li><b>0–3:</b> fine, train as written.</li>
+      <li><b>4–5:</b> go lighter, shorten the range, or swap (squat → leg press, lunge → low step-up).</li>
+      <li><b>6+:</b> stop leg work for the day. If it happens twice, see a physio.</li>
+    </ul><p class="muted small" style="margin-top:8px">Log your knee score at the end of each session. The Progress tab charts it.</p></div>
+    <div class="card"><h3>The front-leg brace</h3>
+      <p>At front-foot contact, the front leg stays straight but not locked. It stops the run-up and sends the speed up into the trunk and arm.</p>
+      <ol>
+        <li><b>Hold it</b> (Mon): brace holds in your delivery stride. Squeeze the thigh so the kneecap lifts, and never lock the knee back.</li>
+        <li><b>Lower it</b> (Fri): slow step-downs and landmine split squats.</li>
+        <li><b>Land on it</b> (weeks 5–8, Mon): step off a low box and freeze on the front leg.</li>
+      </ol></div>
+    <div class="card"><h3>5-minute stretch</h3><ol>
+      <li><b>Cat–camel</b> ×8, slow</li>
+      <li><b>Open book</b> ×6 each side</li>
+      <li><b>Kneeling hip-flexor stretch</b>, 30 s each side (pad under the knee)</li>
+      <li><b>Lying hamstring stretch</b> with a towel, 30 s each leg</li>
+      <li><b>Child's pose</b>, 5 slow breaths</li>
+    </ol></div>
+  </div>
+</template>
+
+<script src="program.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
